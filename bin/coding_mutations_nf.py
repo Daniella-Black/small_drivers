@@ -78,4 +78,4 @@ for variant in range(len(samp)):
   effects.append(flatten(re.findall(r'\|\|(.*?)\|\|\|\|', samp['INFO'][variant)))
 varianteffectsdf = pd.DataFrame()
 varianteffectsdf[sample + '_effect'] = flatten(effects)
-varianteffectsdf.to_csv(sample + '_' + '_all_variant_effects.csv')                                                                       
+varianteffectsdf.to_csv(sample + '_all_variant_effects.csv')                                                                       

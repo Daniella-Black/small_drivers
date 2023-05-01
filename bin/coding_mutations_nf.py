@@ -75,7 +75,7 @@ samp = samp[samp['chr'].isin(chroms)]
 samp = samp[samp['FILTER']=='PASS']
 effects = list()
 for variant in range(len(samp)):
-  effects.append(flatten(re.findall(r'\|\|(.*?)\|\|\|\|', samp['INFO'][variant)))
+  effects.append(flatten(re.findall(r'\|\|(.*?)\|\|\|\|', samp['INFO'][variant])))
 varianteffectsdf = pd.DataFrame()
 varianteffectsdf[sample + '_effect'] = flatten(effects)
 varianteffectsdf.to_csv(sample + '_all_variant_effects.csv')                                                                       

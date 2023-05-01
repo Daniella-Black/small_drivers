@@ -74,6 +74,7 @@ chroms = ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8', 'chr9'
 samp = samp[samp['chr'].isin(chroms)]
 samp = samp[samp['FILTER']=='PASS']
 effects = list()
+samp = samp.reset_index(drop=True)
 for variant in range(len(samp)):
   effects.append(flatten(re.findall(r'\|\|(.*?)\|\|\|\|', samp['INFO'][variant])))
 varianteffectsdf = pd.DataFrame()

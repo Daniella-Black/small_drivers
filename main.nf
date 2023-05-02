@@ -18,8 +18,8 @@ process  CloudOS_MTR_input{
     set val(tumour_sample_platekey), file(somatic_small_variants_annotation_vcf), file(mane), file(hgnc), file(cmc) from ch_input
 
     output:
-    file '*_all_variant_effects.csv'
-    
+    //file '*_all_variant_effects.csv'
+    file '*_splice_variants_of_interest.csv'
     script:
     """
     coding_mutations_nf.py -sample '$tumour_sample_platekey' -annotation_vcf_path '$somatic_small_variants_annotation_vcf' -mane '$mane' -hgnc '$hgnc' -cmc '$cmc'

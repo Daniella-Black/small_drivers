@@ -38,15 +38,10 @@ def flatten(A):
     return rt
 
 ##terms of interested from annoated vcf INFO column for drivers 
-relevant_terms = ['splice_acceptor_variant',
+relevant_terms = [
 'splice_donor_variant',
-'stop_gained',
-'frameshift_variant',
-'stop_lost',
-'start_lost',
-'inframe_insertion',
-'inframe_deletion',
-'missense_variant',
+'splice_region_variant',
+'splice_donor_region_variant',
 'splice_donor_5th_base_variant']
 
 
@@ -73,10 +68,15 @@ samp = samp.rename(columns={0: 'chr', 1:'pos', 2:'ID', 3:'REF', 4:'ALT', 5:'QUAL
 chroms = ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8', 'chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14', 'chr15', 'chr16', 'chr17', 'chr18', 'chr19', 'chr20', 'chr21', 'chr22', 'chrX', 'chrY']
 samp = samp[samp['chr'].isin(chroms)]
 samp = samp[samp['FILTER']=='PASS']
-effects = list()
-samp = samp.reset_index(drop=True)
-for variant in range(len(samp)):
-  effects.append(flatten(re.findall(r'\|\|(.*?)\|\|\|\|', samp['INFO'][variant])))
-varianteffectsdf = pd.DataFrame()
-varianteffectsdf[sample + '_effect'] = flatten(effects)
-varianteffectsdf.to_csv(sample + '_all_variant_effects.csv')                                                                       
+#effects = list()
+#samp = samp.reset_index(drop=True)
+#for variant in range(len(samp)):
+#  effects.append(flatten(re.findall(r'\|\|(.*?)\|\|\|\|', samp['INFO'][variant])))
+#varianteffectsdf = pd.DataFrame()
+#varianteffectsdf[sample + '_effect'] = flatten(effects)
+#varianteffectsdf.to_csv(sample + '_all_variant_effects.csv')
+to_keep = list(samp['INFO'].str.contains('|'.join(relevant_terms)))
+samp['relevant_types']=to_keep
+sampcsqt_type = samp.loc[samp['relevant_types']==True]
+sampcsqt_type.index = pd.RangeIndex(len(sampcsqt_type.index))
+sampcsqt_type.to_csv(sample + '_splice_variants_of_interest.csv')

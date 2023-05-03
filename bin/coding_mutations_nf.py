@@ -75,8 +75,9 @@ samp = samp[samp['FILTER']=='PASS']
 #varianteffectsdf = pd.DataFrame()
 #varianteffectsdf[sample + '_effect'] = flatten(effects)
 #varianteffectsdf.to_csv(sample + '_all_variant_effects.csv')
-to_keep = list(samp['INFO'].str.contains('|'.join(relevant_terms)))
-samp['relevant_types']=to_keep
-sampcsqt_type = samp.loc[samp['relevant_types']==True]
-sampcsqt_type.index = pd.RangeIndex(len(sampcsqt_type.index))
-sampcsqt_type.to_csv(sample + '_splice_variants_of_interest.csv')
+#to_keep = list(samp['INFO'].str.contains('|'.join(relevant_terms)))
+#samp['relevant_types']=to_keep
+#sampcsqt_type = samp.loc[samp['relevant_types']==True]
+#sampcsqt_type.index = pd.RangeIndex(len(sampcsqt_type.index))
+sampcsqt_type = samp[samp['INFO'].str.contains('\+5(?=[A-Z])')]
+sampcsqt_type.to_csv(sample + '_info_contains_plus5_followed_byA-Z.csv')

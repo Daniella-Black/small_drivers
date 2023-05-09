@@ -18,13 +18,10 @@ process  CloudOS_MTR_input{
     set val(tumour_sample_platekey), file(somatic_small_variants_annotation_vcf), file(mane), file(hgnc), file(cmc), file(non_mane_transcripts) from ch_input
 
     output:
-    file '*_coding_mutations.csv'
-    file '*_coding_mutations_no_mane_transcript_maps.csv'
-    file '*_coding_mutations_more_than_1_mane_transcript_maps.csv'
-    file '*_sampcsqt_type.csv'
-    file '*_cosmic_annotation_using_pos_no_indels.csv'
-    file '*_tert_promoter_mutations.csv'
-    //file '*_pre_cosmic_for_splice_investigation.csv'
+    file '*_tert_promoter_mutations_from_unfiltered_mutation_file.csv'
+    file '*_unique_chr.csv'
+    file '*_unfiltered_variants.csv'
+    file '*_filtered_variants.csv'
     
     script:
     """

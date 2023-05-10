@@ -246,7 +246,7 @@ if len(sampcsqt_type_over_1.index) >0:
                 enst_is_coding_transcript.append(gene)
         variant_info.append(list(enst_is_coding))
         variant_info_transcript.append(list(enst_is_coding_transcript))
-    overOneTran['relevant_term_associated_trans'] = variant_info_transcript
+    sampcsqt_type_over_1['relevant_term_associated_trans'] = variant_info_transcript
     for element in variant_info:
         if len(element) >1:
             if element[0] == element[1]:

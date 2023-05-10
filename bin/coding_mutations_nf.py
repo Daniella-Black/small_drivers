@@ -301,6 +301,7 @@ if sampcsqt_type_over_1_multi is not None and len(sampcsqt_type_over_1_multi.ind
   sampcsqt_type_over_1_multi['strand'] = big_strand
   ##if one mane tran associated with relevant term is a cgc and the others are not. Then extract the information for the cgc gene and append this to the mane table
   sampcsqt_type_over_1_cgc1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count']=='1_cgc']
+  sampcsqt_type_over_1_cgc1 = sampcsqt_type_over_1_cgc1.reset_index(drop=True)
   cgc_trans = list()
   if len(sampcsqt_type_over_1_cgc1.index) >0:
     for row in range(len(sampcsqt_type_over_1_cgc1.index)):

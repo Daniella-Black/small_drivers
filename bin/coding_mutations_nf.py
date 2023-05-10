@@ -25,7 +25,7 @@ my_parser.add_argument('-non_mane_transcripts',
                        help='path to table containing non-mane transcript info')
 my_parser.add_argument('-cgc',
                        type=str,
-                       help='path to cgc table)
+                       help='path to cgc table')
 args = my_parser.parse_args()
 
 ###pull out coding mutations

@@ -282,7 +282,7 @@ if sampcsqt_type_over_1 is not None and len(sampcsqt_type_over_1_multi.index) > 
       elif at_least_one_tran_cgc > 3:
           at_least_one_tran_cgc.append('over_3_cgc')
       else:
-          at_least_one_tran_cgc.apend('0_cgc')
+          at_least_one_tran_cgc.append('0_cgc')
   sampcsqt_type_over_1_multi['cgc_tran_count'] = at_least_one_tran_cgc
 
   ##get strand information for all the mane transcripts associated with relevant terms overlapping variant

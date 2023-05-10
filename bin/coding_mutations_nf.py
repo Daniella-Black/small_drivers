@@ -263,51 +263,52 @@ if len(sampcsqt_type_over_1.index) >0:
                        
 ##################################################################################################################################
 #################dealing with cases where there are more than one mane transcript associated with relevant term in the info column
-##################################################################################################################################                       
-##find out how many cgc genes are in the list of mane transcripts associated with relevant terms for the variants with multiple mane transcripts associated with relevant terms in the info column
-mane_cgc = mane[mane['gene_ID'].isin(list(cgc['ENSG']))].reset_index(drop=True)
-at_least_one_tran_cgc = list()
-for row in range(len(sampcsqt_type_over_1_multi)):
-    at_least_one_tran_cgc = 0
-    for gene in range(len(mane_cgc)):
-        if mane_cgc['transcript_ID'][gene] in sampcsqt_type_over_1_multi['relevant_term_associated_trans'][row]:
-            at_least_one_tran_cgc = at_least_one_tran_cgc +1
-    if at_least_one_tran_cgc == 1:
-        at_least_one_tran_cgc.apend('1_cgc')
-    elif at_least_one_tran_cgc == 2:
-        at_least_one_tran_cgc.apend('2_cgc')
-    elif at_least_one_tran_cgc == 3:
-        at_least_one_tran_cgc.apend('3_cgc')
-    elif at_least_one_tran_cgc > 3:
-        at_least_one_tran_cgc.apend('over_3_cgc')
-    else:
-        at_least_one_tran_cgc.apend('0_cgc')
-sampcsqt_type_over_1_multi['cgc_tran_count'] = at_least_one_tran_cgc
+##################################################################################################################################
+if sampcsqt_type_over_1_multi is not None and len(sampcsqt_type_over_1_multi.index) > 0:
+  ##find out how many cgc genes are in the list of mane transcripts associated with relevant terms for the variants with multiple mane transcripts associated with relevant terms in the info column
+  mane_cgc = mane[mane['gene_ID'].isin(list(cgc['ENSG']))].reset_index(drop=True)
+  at_least_one_tran_cgc = list()
+  for row in range(len(sampcsqt_type_over_1_multi)):
+      at_least_one_tran_cgc = 0
+      for gene in range(len(mane_cgc)):
+          if mane_cgc['transcript_ID'][gene] in sampcsqt_type_over_1_multi['relevant_term_associated_trans'][row]:
+              at_least_one_tran_cgc = at_least_one_tran_cgc +1
+      if at_least_one_tran_cgc == 1:
+          at_least_one_tran_cgc.apend('1_cgc')
+      elif at_least_one_tran_cgc == 2:
+          at_least_one_tran_cgc.apend('2_cgc')
+      elif at_least_one_tran_cgc == 3:
+          at_least_one_tran_cgc.apend('3_cgc')
+      elif at_least_one_tran_cgc > 3:
+          at_least_one_tran_cgc.apend('over_3_cgc')
+      else:
+          at_least_one_tran_cgc.apend('0_cgc')
+  sampcsqt_type_over_1_multi['cgc_tran_count'] = at_least_one_tran_cgc
 
-##get strand information for all the mane transcripts associated with relevant terms overlapping variant
-both_on_strand = list()
-big_strand = list()
-for row in range(len(sampcsqt_type_over_1_multi.index)):
-    strand = list()
-    for enst in sampcsqt_type_over_1_multi['relevant_term_associated_trans'][row]:
-        mane_full_tmp = mane_full[mane_full['transcript_ID']==enst]
-        mane_full_tmp = mane_full_tmp.reset_index(drop=True)
-        if len(mane_full_tmp.index)>0:
-            strand.append(mane_full_tmp['strand'][0])
-    big_strand.append(strand)
-sampcsqt_type_over_1_multi['strand'] = big_strand
-##if one mane tran associated with relevant term is a cgc and the others are not. Then extract the information for the cgc gene and append this to the mane table
-sampcsqt_type_over_1_cgc1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count']=='1_cgc']
-cgc_trans = list()
-for row in range(len(sampcsqt_type_over_1_cgc1.index)):
-    cgc_trans.append(list(set(mane_cgc['transcript_ID']) and set(sampcsqt_type_over_1_cgc1['relevant_term_associated_trans'][row])))    
-sampcsqt_type_over_1_cgc1['mane_tran'] = cgc_trans
-sampcsqt_type_over_1_cgc1.to_csv(sample + '_one_cgc_mane_tran_associated_with_relevant_terms.csv', index=False)                                
-##if more than one mane tran associated with relevant term is cgc and the others are not. Output for now.
-sampcsqt_type_over_1_cgcover1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count'].isin('2_cgc', '3_cgc', 'over_3_cgc')]                        
-sampcsqt_type_over_1_cgcover1.to_csv(sample + '_over_one_cgc_mane_tran_associated_with_relevant_term.csv', index=False)                       
+  ##get strand information for all the mane transcripts associated with relevant terms overlapping variant
+  both_on_strand = list()
+  big_strand = list()
+  for row in range(len(sampcsqt_type_over_1_multi.index)):
+      strand = list()
+      for enst in sampcsqt_type_over_1_multi['relevant_term_associated_trans'][row]:
+          mane_full_tmp = mane_full[mane_full['transcript_ID']==enst]
+          mane_full_tmp = mane_full_tmp.reset_index(drop=True)
+          if len(mane_full_tmp.index)>0:
+              strand.append(mane_full_tmp['strand'][0])
+      big_strand.append(strand)
+  sampcsqt_type_over_1_multi['strand'] = big_strand
+  ##if one mane tran associated with relevant term is a cgc and the others are not. Then extract the information for the cgc gene and append this to the mane table
+  sampcsqt_type_over_1_cgc1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count']=='1_cgc']
+  cgc_trans = list()
+  for row in range(len(sampcsqt_type_over_1_cgc1.index)):
+      cgc_trans.append(list(set(mane_cgc['transcript_ID']) and set(sampcsqt_type_over_1_cgc1['relevant_term_associated_trans'][row])))    
+  sampcsqt_type_over_1_cgc1['mane_tran'] = cgc_trans
+  sampcsqt_type_over_1_cgc1.to_csv(sample + '_one_cgc_mane_tran_associated_with_relevant_terms.csv', index=False)                                
+  ##if more than one mane tran associated with relevant term is cgc and the others are not. Output for now.
+  sampcsqt_type_over_1_cgcover1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count'].isin('2_cgc', '3_cgc', 'over_3_cgc')]                        
+  sampcsqt_type_over_1_cgcover1.to_csv(sample + '_over_one_cgc_mane_tran_associated_with_relevant_term.csv', index=False)                       
 
-sampcsqt_type = pd.concat([sampcsqt_type,sampcsqt_type_over_1_cgc1 ])
+  sampcsqt_type = pd.concat([sampcsqt_type,sampcsqt_type_over_1_cgc1 ])
 #pull out the variant info - split into the two cases os whether the ENST is written once or twice in the info column SomaticFisherPhred = list()
 if len(sampcsqt_type.index) >0:
   VAF= list()

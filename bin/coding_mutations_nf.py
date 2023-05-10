@@ -68,6 +68,30 @@ non_mane_transcripts = pd.read_csv(non_mane_transcripts)
 mane = pd.concat([mane, non_mane_transcripts])
 mane = mane.reset_index(drop = True)
 
+ 
+
+#check how many mane canonical transcripts are listed in the info field. One is good. Sometimes there is more than one. Sometimes there are none. Sometimes there are more than one check_transcripts = list()
+#provide a table with an INFO column from which you want to pull out one of a specific set of transcripts of interest e.g. sampcsqt_type
+#provide a table with column transcript ID which contains the set of transcripts you are interested in pulling out e.g. mane
+##funciton will add a column to the table with the INFO colum in showing which transcripts the list have been identified in the INFO column
+def pull_out_transcripts_from_info(table, transcripts_of_interest):
+  check_transcripts = list()
+  for gene in range(len(table)):
+      total_mane_tran_in_row=0
+      check_transcripts_tmp =[]
+      for transcript in list(transcripts_of_interest['transcript_ID']):
+          if transcript in table['INFO'][gene]:
+              check_transcripts_tmp.append(transcript)
+              total_mane_tran_in_row = total_mane_tran_in_row+1
+      if total_mane_tran_in_row == 0:
+          check_transcripts.append(['NoManeTran'])
+      else:
+          check_transcripts.append(check_transcripts_tmp) 
+
+  table['mane_tran'] = check_transcripts
+  return table
+
+
 
 def nth_repl(s, sub, repl, n):
     find = s.find(sub)
@@ -160,21 +184,7 @@ sampcsqt_type.index = pd.RangeIndex(len(sampcsqt_type.index))
 
 
 #check how many mane canonical transcripts are listed in the info field. One is good. Sometimes there is more than one. Sometimes there are none. Sometimes there are more than one check_transcripts = list()
-check_transcripts = list()
-for gene in range(len(sampcsqt_type)):
-    total_mane_tran_in_row=0
-    check_transcripts_tmp =[]
-    for transcript in list(mane['transcript_ID']):
-        if transcript in sampcsqt_type['INFO'][gene]:
-            check_transcripts_tmp.append(transcript)
-            total_mane_tran_in_row = total_mane_tran_in_row+1
-    if total_mane_tran_in_row == 0:
-        check_transcripts.append(['NoManeTran'])
-    else:
-        check_transcripts.append(check_transcripts_tmp) 
-
-sampcsqt_type['mane_tran'] = check_transcripts
-
+pull_out_transcripts_from_info(sampcsqt_type, mane)
 
 
 

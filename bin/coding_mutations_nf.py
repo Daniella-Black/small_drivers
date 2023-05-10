@@ -307,8 +307,14 @@ if sampcsqt_type_over_1_multi is not None and len(sampcsqt_type_over_1_multi.ind
   sampcsqt_type_over_1_cgc1['mane_tran'] = cgc_trans
   sampcsqt_type_over_1_cgc1.to_csv(sample + '_one_cgc_mane_tran_associated_with_relevant_terms.csv', index=False)                                
   ##if more than one mane tran associated with relevant term is cgc and the others are not. Output for now.
-  sampcsqt_type_over_1_cgcover1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count'].isin(['2_cgc', '3_cgc', 'over_3_cgc'])]                        
-  sampcsqt_type_over_1_cgcover1.to_csv(sample + '_over_one_cgc_mane_tran_associated_with_relevant_term.csv', index=False)                       
+  sampcsqt_type_over_1_cgcover1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count'].isin(['2_cgc', '3_cgc', 'over_3_cgc'])]
+  sampcsqt_type_over_1_cgcover1.to_csv(sample + '_over_one_cgc_mane_tran_associated_with_relevant_term.csv', index=False) 
+else:
+  sampcsqt_type_over_1_cgc1 = pd.DataFrame()
+  sampcsqt_type_over_1_cgc1.to_csv(sample + '_one_cgc_mane_tran_associated_with_relevant_terms.csv', index=False)   
+  sampcsqt_type_over_1_cgcover1 = pd.DataFrame()
+  sampcsqt_type_over_1_cgcover1.to_csv(sample + '_over_one_cgc_mane_tran_associated_with_relevant_term.csv', index=False) 
+  
 
   sampcsqt_type = pd.concat([sampcsqt_type,sampcsqt_type_over_1_cgc1 ])
 #pull out the variant info - split into the two cases os whether the ENST is written once or twice in the info column SomaticFisherPhred = list()

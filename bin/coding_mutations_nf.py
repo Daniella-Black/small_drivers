@@ -274,13 +274,13 @@ if sampcsqt_type_over_1 is not None and len(sampcsqt_type_over_1_multi.index) > 
           if mane_cgc['transcript_ID'][gene] in sampcsqt_type_over_1_multi['relevant_term_associated_trans'][row]:
               at_least_one_tran_cgc = at_least_one_tran_cgc +1
       if at_least_one_tran_cgc == 1:
-          at_least_one_tran_cgc.apend('1_cgc')
+          at_least_one_tran_cgc.append('1_cgc')
       elif at_least_one_tran_cgc == 2:
-          at_least_one_tran_cgc.apend('2_cgc')
+          at_least_one_tran_cgc.append('2_cgc')
       elif at_least_one_tran_cgc == 3:
-          at_least_one_tran_cgc.apend('3_cgc')
+          at_least_one_tran_cgc.append('3_cgc')
       elif at_least_one_tran_cgc > 3:
-          at_least_one_tran_cgc.apend('over_3_cgc')
+          at_least_one_tran_cgc.append('over_3_cgc')
       else:
           at_least_one_tran_cgc.apend('0_cgc')
   sampcsqt_type_over_1_multi['cgc_tran_count'] = at_least_one_tran_cgc

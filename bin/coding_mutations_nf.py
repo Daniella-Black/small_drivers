@@ -302,9 +302,10 @@ if sampcsqt_type_over_1_multi is not None and len(sampcsqt_type_over_1_multi.ind
   ##if one mane tran associated with relevant term is a cgc and the others are not. Then extract the information for the cgc gene and append this to the mane table
   sampcsqt_type_over_1_cgc1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count']=='1_cgc']
   cgc_trans = list()
-  for row in range(len(sampcsqt_type_over_1_cgc1.index)):
-      cgc_trans.append(list(set(mane_cgc['transcript_ID']) and set(sampcsqt_type_over_1_cgc1['relevant_term_associated_trans'][row])))    
-  sampcsqt_type_over_1_cgc1['mane_tran'] = cgc_trans
+  if len(sampcsqt_type_over_1_cgc1.index) >0:
+    for row in range(len(sampcsqt_type_over_1_cgc1.index)):
+        cgc_trans.append(list(set(mane_cgc['transcript_ID']) and set(sampcsqt_type_over_1_cgc1['relevant_term_associated_trans'][row])))    
+    sampcsqt_type_over_1_cgc1['mane_tran'] = cgc_trans
   sampcsqt_type_over_1_cgc1.to_csv(sample + '_one_cgc_mane_tran_associated_with_relevant_terms.csv', index=False)                                
   ##if more than one mane tran associated with relevant term is cgc and the others are not. Output for now.
   sampcsqt_type_over_1_cgcover1 = sampcsqt_type_over_1_multi[sampcsqt_type_over_1_multi['cgc_tran_count'].isin(['2_cgc', '3_cgc', 'over_3_cgc'])]

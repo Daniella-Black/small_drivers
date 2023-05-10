@@ -23,6 +23,9 @@ my_parser.add_argument('-hgnc',
 my_parser.add_argument('-non_mane_transcripts',
                        type=str,
                        help='path to table containing non-mane transcript info')
+my_parser.add_argument('-cgc',
+                       type=str,
+                       help='path to cgc table)
 args = my_parser.parse_args()
 
 ###pull out coding mutations
@@ -32,6 +35,7 @@ mane_path = args.mane
 cmc = args.cmc
 hgnc = args.hgnc
 non_mane_transcripts = args.non_mane_transcripts
+cgc = args.cgc
 
 def flatten(A):
     rt = []
@@ -53,8 +57,14 @@ relevant_terms = ['splice_acceptor_variant',
 #'splice_donor_5th_base_variant'
 'splice_region_variant']
 
-
-
+##read in the cgc table and get the ensg numbers into correct format
+cgc = pd.read_csv(cgc, sep='\t')
+#get the cleaned up ensg number                       
+cgc[['start', 'containing_ensg']] = cgc.Synonyms.str.split('ENSG', expand=True)
+cgc[['ensg_no', 'rest']] = cgc.containing_ensg.str.split(".", 1, expand=True)
+cgc['ENSG'] = 'ENSG' + cgc['ensg_no']
+##tidy up
+cgc = cgc.drop(['start', 'containing_ensg','ensg_no', 'rest'], axis=1)
 
 #get the mane file into the correct format for nextflow
 mane = pd.read_csv(mane_path, sep='\t')
@@ -62,6 +72,7 @@ mane[['transcript_ID', 'to_del2']] = mane['name'].str.split('.', 1, expand=True)
 mane[['gene_ID', 'to_del2']] = mane['geneName'].str.split('.', 1, expand=True)
 mane = mane.rename(columns={'#chrom': 'chr', 'chromStart': 'start', 'chromEnd': 'end', 'geneName2': 'gene_name' })
 mane['chr'] = mane['chr'].str.replace('chr', '')
+mane_full = mane                       
 mane = mane[['chr', 'start', 'end', 'transcript_ID','gene_ID', 'gene_name']]
 
 non_mane_transcripts = pd.read_csv(non_mane_transcripts)

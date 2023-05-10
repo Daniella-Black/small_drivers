@@ -208,10 +208,12 @@ sampcsqt_type.to_csv(sample + '_sampcsqt_type.csv')
 
 if len(sampcsqt_type_over_1.index) >0:
     variant_info = list()
+    variant_info_transcript = list()
     VAF=list()
     for row in range(len(sampcsqt_type_over_1.index)): 
         variant_info_temp = list()
         enst_is_coding = list()
+        enst_is_coding_transcript = list()
         if sampcsqt_type_over_1['INFO'][row].find('VAF')!= -1:
             VAF.append(sampcsqt_type_over_1['INFO'][row].rsplit('VAF=', maxsplit=1)[1].rsplit(';')[0])
         else:
@@ -230,14 +232,17 @@ if len(sampcsqt_type_over_1.index) >0:
         for info in variant_info_temp:
             if any(substring in info for substring in relevant_terms):
                 enst_is_coding.append(info)
+                enst_is_coding_transcript.append(gene)
         variant_info.append(list(enst_is_coding))
-
+        variant_info_transcript.append(list(enst_is_coding_transcript))
+    overOneTran['relevant_term_associated_trans'] = variant_info_transcript
     for element in variant_info:
         if len(element) >1:
             if element[0] == element[1]:
                 element.remove(element[1])
     sampcsqt_type_over_1['variant_info'] =variant_info
     sampcsqt_type_over_1['VAF'] =VAF
+    sampcsqt_type_over_1_multi =sampcsqt_type_over_1.loc[sampcsqt_type_over_1['variant_info'].map(len)>1]
     sampcsqt_type_over_1=sampcsqt_type_over_1.loc[sampcsqt_type_over_1['variant_info'].map(len)==1]
     if len(sampcsqt_type_over_1.index) > 0:
         sampcsqt_type_over_1['variant_info'] = flatten(sampcsqt_type_over_1['variant_info'])

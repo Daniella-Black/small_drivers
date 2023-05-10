@@ -260,11 +260,13 @@ if len(sampcsqt_type_over_1.index) >0:
         sampcsqt_type_over_1[['variant_info', 'mane_tran']] = sampcsqt_type_over_1['variant_info'].str.split('$', 1, expand=True)
     else:
         sampcsqt_type_over_1 = None
+else:
+   sampcsqt_type_over_1_multi = None
                        
 ##################################################################################################################################
 #################dealing with cases where there are more than one mane transcript associated with relevant term in the info column
 ##################################################################################################################################
-if sampcsqt_type_over_1 is not None and len(sampcsqt_type_over_1_multi.index) > 0:
+if sampcsqt_type_over_1_multi is not None and len(sampcsqt_type_over_1_multi.index) > 0:
   ##find out how many cgc genes are in the list of mane transcripts associated with relevant terms for the variants with multiple mane transcripts associated with relevant terms in the info column
   mane_cgc = mane[mane['gene_ID'].isin(list(cgc['ENSG']))].reset_index(drop=True)
   at_least_one_tran_cgc = list()

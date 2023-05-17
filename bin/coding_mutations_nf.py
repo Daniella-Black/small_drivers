@@ -466,9 +466,11 @@ if len(coding.index) > 0:
   cosmic_temp_no_pos = cosmic_temp[cosmic_temp['Mutation genome position GRCh38'] == 'NaN']
 
   coding_mane_pos = coding_mane.merge(cosmic_pos, left_on='pos_for_cosmic_comp', right_on='Mutation genome position GRCh38') 
+  coding_mane_pos['cosmic_source'] = 'GRCH38 genome position'
   if len(cosmic_temp_no_pos.index) >0:
       coding_mane_no_pos = coding_mane.merge(cosmic_temp_no_pos, on='ENSG')
       coding_mane_no_pos = coding_mane.loc[(coding_mane['aa'] ==coding_mane['Mutation AA'])]
+      coding_mane_no_pos['cosmic_source'] = 'Mutation aa matching'
       #coding_mane_pos = coding_mane_pos.loc[(coding_mane_pos['Mutation genome position GRCh38'] ==coding_mane_pos['pos_for_cosmic_comp'])]
   #select rows which have cosmic info.
   if len(cosmic_temp_no_pos.index) >0:

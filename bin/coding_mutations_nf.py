@@ -408,7 +408,7 @@ if len(coding.index) > 0:
   coding_spliceregion = coding_spliceregion[coding_spliceregion['INFO'].str.contains('\+5(?=[A-Z])')] 
   coding = pd.concat([coding_nonspliceregion,coding_spliceregion])
   coding.index = pd.RangeIndex(len(coding.index))
-  if coding.index>0:
+  if len(coding.index) >0:
     for amino in AA.keys():
         for row in range(len(coding.index)):
             if amino in coding['aa'][row]:

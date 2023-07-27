@@ -408,77 +408,78 @@ if len(coding.index) > 0:
   coding_spliceregion = coding_spliceregion[coding_spliceregion['INFO'].str.contains('\+5(?=[A-Z])')] 
   coding = pd.concat([coding_nonspliceregion,coding_spliceregion])
   coding.index = pd.RangeIndex(len(coding.index))
-  for amino in AA.keys():
-      for row in range(len(coding.index)):
-          if amino in coding['aa'][row]:
-              coding['aa'][row] = coding['aa'][row].replace(amino, AA[amino])
-
-  ##split out the subs and indels because are dealing with these differently for cosmic. 
-  coding['aa'] = coding['aa'].str.replace(r'(', '', regex=True)
-  coding['aa'] = coding['aa'].str.replace(r')', '', regex=True)
-  #coding_indels = coding.loc[(coding['REF'].str.len() > 1) | (coding['ALT'].str.len() >1)]
-  #coding_indels.to_csv('/home/jovyan/session_data/small_drivers/Head_Neck/mane/including_over_1/LP3001647-DNA_A05/LP3001647-DNA_A05_coding_mutations_indels_one_letter_code.csv')
-  #coding = coding.loc[(coding['REF'].str.len() == 1) & (coding['ALT'].str.len() == 1) ]
-  coding.index = pd.RangeIndex(len(coding.index))
-
-  for row in range(len(coding.index)):
-      if 'STOP' in coding['aa'][row]:
-          coding['aa'][row] = coding['aa'][row].replace('STOP', '*')
-  for row in range(len(coding.index)):
-      if len(coding['REF'][row]) == 1 and len(coding['ALT'][row]) == 1:
-          for amino in AA.values():
-              if coding['aa'][row].count(amino) ==2:
-                  coding['aa'][row] = nth_repl(coding['aa'][row], amino,"=",2) #print('yes')
-  ##make the pos column
-  pos_for_cosmic_comp = list()
-  for row in range(len(coding.index)):
-      if len(coding['REF'][row]) == 1 and len(coding['ALT'][row])==1:
-          if coding['chr'][row] == 'chrX':
-            pos_for_cosmic_comp.append('23:' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
-          elif coding['chr'][row] == 'chrY':
-            pos_for_cosmic_comp.append('24:' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
-          else:
-            pos_for_cosmic_comp.append(coding['chr'][row] + ':' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
-      elif len(coding['REF'][row]) == 1 and len(coding['ALT'][row]) > 1:
-          pos_for_cosmic_comp.append('indel')
-          #pos_for_cosmic_comp.append(coding['chr'][row] + ':' + str(coding['pos'][row]) +'-' + str(coding['pos'][row] + 1))
-      elif len(coding['REF'][row]) > 1 and len(coding['ALT'][row]) == 1:
-          pos_for_cosmic_comp.append('indel')
-          #pos_for_cosmic_comp.append(coding['chr'][row] + ':' + str(coding['pos'][row]) +'-' + str(coding['pos'][row] + len(coding['REF'][row])- 1))
-      else:
-          pos_for_cosmic_comp.append('strange_indel')
-
-  coding['pos_for_cosmic_comp'] = pos_for_cosmic_comp
-  coding['pos_for_cosmic_comp'] = coding['pos_for_cosmic_comp'].str.replace('chr', '')
+  if coding.index>0:
+    for amino in AA.keys():
+        for row in range(len(coding.index)):
+            if amino in coding['aa'][row]:
+                coding['aa'][row] = coding['aa'][row].replace(amino, AA[amino])
   
-  #coding.to_csv(sample+ '_pre_cosmic_for_splice_investigation.csv')
-  ##gsub the chr
-  #combine the man transcript table with the coding mutation table so can convert from ENST to ENSG to match cosmic.
-  mane_temp= mane.rename(columns={'chr':'chr_mane', 'start': 'start_mane', 'end': 'end_mane', 'gene_name': 'gene_name_mane', 'transcript_ID':'mane_tran', 'gene_ID': 'gene_ID_mane' })
-  mane_temp = mane_temp[mane_temp['mane_tran'].isin(coding['mane_tran'])]
-  coding_mane = coding.merge(mane_temp, on='mane_tran')
-  #merge cosmic and coding table via ENSG numbers
-  coding_mane = coding_mane.rename(columns={'gene_ID_mane': 'ENSG'})
-  ##cosmic temp is for creating coding_mane_no_pos where both ENSG and protien must match
-  ##for pos can use just the genome position
-  cosmic_temp = cosmic_ENSG[cosmic_ENSG['ENSG'].isin(coding_mane['ENSG'])]
-  cosmic_pos = cmc[cmc['Mutation genome position GRCh38'] != 'NaN']
-  cosmic_temp_no_pos = cosmic_temp[cosmic_temp['Mutation genome position GRCh38'] == 'NaN']
-
-  coding_mane_pos = coding_mane.merge(cosmic_pos, left_on='pos_for_cosmic_comp', right_on='Mutation genome position GRCh38') 
-  coding_mane_pos['cosmic_source'] = 'GRCH38 genome position'
-  if len(cosmic_temp_no_pos.index) >0:
-      coding_mane_no_pos = coding_mane.merge(cosmic_temp_no_pos, on='ENSG')
-      coding_mane_no_pos = coding_mane.loc[(coding_mane['aa'] ==coding_mane['Mutation AA'])]
-      coding_mane_no_pos['cosmic_source'] = 'Mutation aa matching'
-      #coding_mane_pos = coding_mane_pos.loc[(coding_mane_pos['Mutation genome position GRCh38'] ==coding_mane_pos['pos_for_cosmic_comp'])]
-  #select rows which have cosmic info.
-  if len(cosmic_temp_no_pos.index) >0:
-      coding_cosmic_final = pd.concat[[coding_mane_pos, coding_mane_no_pos]]
-  else:
-      coding_cosmic_final = coding_mane_pos
-  #coding_mane = coding_mane.loc[(coding_mane['aa'] ==coding_mane['Mutation AA'])]
-  coding_cosmic_final.to_csv(sample+'_cosmic_annotation_using_pos_no_indels.csv')
+    ##split out the subs and indels because are dealing with these differently for cosmic. 
+    coding['aa'] = coding['aa'].str.replace(r'(', '', regex=True)
+    coding['aa'] = coding['aa'].str.replace(r')', '', regex=True)
+    #coding_indels = coding.loc[(coding['REF'].str.len() > 1) | (coding['ALT'].str.len() >1)]
+    #coding_indels.to_csv('/home/jovyan/session_data/small_drivers/Head_Neck/mane/including_over_1/LP3001647-DNA_A05/LP3001647-DNA_A05_coding_mutations_indels_one_letter_code.csv')
+    #coding = coding.loc[(coding['REF'].str.len() == 1) & (coding['ALT'].str.len() == 1) ]
+    coding.index = pd.RangeIndex(len(coding.index))
+  
+    for row in range(len(coding.index)):
+        if 'STOP' in coding['aa'][row]:
+            coding['aa'][row] = coding['aa'][row].replace('STOP', '*')
+    for row in range(len(coding.index)):
+        if len(coding['REF'][row]) == 1 and len(coding['ALT'][row]) == 1:
+            for amino in AA.values():
+                if coding['aa'][row].count(amino) ==2:
+                    coding['aa'][row] = nth_repl(coding['aa'][row], amino,"=",2) #print('yes')
+    ##make the pos column
+    pos_for_cosmic_comp = list()
+    for row in range(len(coding.index)):
+        if len(coding['REF'][row]) == 1 and len(coding['ALT'][row])==1:
+            if coding['chr'][row] == 'chrX':
+              pos_for_cosmic_comp.append('23:' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
+            elif coding['chr'][row] == 'chrY':
+              pos_for_cosmic_comp.append('24:' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
+            else:
+              pos_for_cosmic_comp.append(coding['chr'][row] + ':' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
+        elif len(coding['REF'][row]) == 1 and len(coding['ALT'][row]) > 1:
+            pos_for_cosmic_comp.append('indel')
+            #pos_for_cosmic_comp.append(coding['chr'][row] + ':' + str(coding['pos'][row]) +'-' + str(coding['pos'][row] + 1))
+        elif len(coding['REF'][row]) > 1 and len(coding['ALT'][row]) == 1:
+            pos_for_cosmic_comp.append('indel')
+            #pos_for_cosmic_comp.append(coding['chr'][row] + ':' + str(coding['pos'][row]) +'-' + str(coding['pos'][row] + len(coding['REF'][row])- 1))
+        else:
+            pos_for_cosmic_comp.append('strange_indel')
+  
+    coding['pos_for_cosmic_comp'] = pos_for_cosmic_comp
+    coding['pos_for_cosmic_comp'] = coding['pos_for_cosmic_comp'].str.replace('chr', '')
+    
+    #coding.to_csv(sample+ '_pre_cosmic_for_splice_investigation.csv')
+    ##gsub the chr
+    #combine the man transcript table with the coding mutation table so can convert from ENST to ENSG to match cosmic.
+    mane_temp= mane.rename(columns={'chr':'chr_mane', 'start': 'start_mane', 'end': 'end_mane', 'gene_name': 'gene_name_mane', 'transcript_ID':'mane_tran', 'gene_ID': 'gene_ID_mane' })
+    mane_temp = mane_temp[mane_temp['mane_tran'].isin(coding['mane_tran'])]
+    coding_mane = coding.merge(mane_temp, on='mane_tran')
+    #merge cosmic and coding table via ENSG numbers
+    coding_mane = coding_mane.rename(columns={'gene_ID_mane': 'ENSG'})
+    ##cosmic temp is for creating coding_mane_no_pos where both ENSG and protien must match
+    ##for pos can use just the genome position
+    cosmic_temp = cosmic_ENSG[cosmic_ENSG['ENSG'].isin(coding_mane['ENSG'])]
+    cosmic_pos = cmc[cmc['Mutation genome position GRCh38'] != 'NaN']
+    cosmic_temp_no_pos = cosmic_temp[cosmic_temp['Mutation genome position GRCh38'] == 'NaN']
+  
+    coding_mane_pos = coding_mane.merge(cosmic_pos, left_on='pos_for_cosmic_comp', right_on='Mutation genome position GRCh38') 
+    coding_mane_pos['cosmic_source'] = 'GRCH38 genome position'
+    if len(cosmic_temp_no_pos.index) >0:
+        coding_mane_no_pos = coding_mane.merge(cosmic_temp_no_pos, on='ENSG')
+        coding_mane_no_pos = coding_mane.loc[(coding_mane['aa'] ==coding_mane['Mutation AA'])]
+        coding_mane_no_pos['cosmic_source'] = 'Mutation aa matching'
+        #coding_mane_pos = coding_mane_pos.loc[(coding_mane_pos['Mutation genome position GRCh38'] ==coding_mane_pos['pos_for_cosmic_comp'])]
+    #select rows which have cosmic info.
+    if len(cosmic_temp_no_pos.index) >0:
+        coding_cosmic_final = pd.concat[[coding_mane_pos, coding_mane_no_pos]]
+    else:
+        coding_cosmic_final = coding_mane_pos
+    #coding_mane = coding_mane.loc[(coding_mane['aa'] ==coding_mane['Mutation AA'])]
+    coding_cosmic_final.to_csv(sample+'_cosmic_annotation_using_pos_no_indels.csv')
 else:
   coding_cosmic_final = pd.DataFrame()
   coding_cosmic_final.to_csv(sample+'_cosmic_annotation_using_pos_no_indels.csv')                                                  

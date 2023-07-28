@@ -480,6 +480,9 @@ if len(coding.index) > 0:
         coding_cosmic_final = coding_mane_pos
     #coding_mane = coding_mane.loc[(coding_mane['aa'] ==coding_mane['Mutation AA'])]
     coding_cosmic_final.to_csv(sample+'_cosmic_annotation_using_pos_no_indels.csv')
+  else:
+    coding_cosmic_final = pd.DataFrame()
+    coding_cosmic_final.to_csv(sample+'_cosmic_annotation_using_pos_no_indels.csv')                                                                                         
 else:
   coding_cosmic_final = pd.DataFrame()
   coding_cosmic_final.to_csv(sample+'_cosmic_annotation_using_pos_no_indels.csv')                                                  

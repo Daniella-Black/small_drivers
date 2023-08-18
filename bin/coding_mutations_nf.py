@@ -465,7 +465,9 @@ if len(coding.index) > 0:
   cosmic_pos = cmc[cmc['Mutation genome position GRCh38'] != 'NaN']
   cosmic_temp_no_pos = cosmic_temp[cosmic_temp['Mutation genome position GRCh38'] == 'NaN']
 
-  coding_mane_pos = coding_mane.merge(cosmic_pos, left_on='pos_for_cosmic_comp', right_on='Mutation genome position GRCh38') 
+   #outer join then remove rows which contain NA in the rows which come from coding_mane
+  coding_mane_pos = coding_mane.merge(cosmic_pos, left_on='pos_for_cosmic_comp', right_on='Mutation genome position GRCh38', how='outer')
+  coding_mane_pos = coding_mane_pos[coding_mane_pos['pos_for_cosmic_comp'].notna()]
   coding_mane_pos['cosmic_source'] = 'GRCH38 genome position'
   if len(cosmic_temp_no_pos.index) >0:
       coding_mane_no_pos = coding_mane.merge(cosmic_temp_no_pos, on='ENSG')

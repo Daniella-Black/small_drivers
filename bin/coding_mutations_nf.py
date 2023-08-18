@@ -433,9 +433,9 @@ if len(coding.index) > 0:
   pos_for_cosmic_comp = list()
   for row in range(len(coding.index)):
       if len(coding['REF'][row]) == 1 and len(coding['ALT'][row])==1:
-          if coding['chr'][row] == 'chrX':
+          if (coding['chr'][row] == 'chrX') or (coding['chr'][row]=='X'):
             pos_for_cosmic_comp.append('23:' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
-          elif coding['chr'][row] == 'chrY':
+          elif (coding['chr'][row] == 'chrY') or (coding['chr'][row] == 'Y') :
             pos_for_cosmic_comp.append('24:' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))
           else:
             pos_for_cosmic_comp.append(coding['chr'][row] + ':' + str(coding['pos'][row]) +'-' + str(coding['pos'][row]))

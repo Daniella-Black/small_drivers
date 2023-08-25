@@ -77,7 +77,7 @@ mane = mane[['chr', 'start', 'end', 'transcript_ID','gene_ID', 'gene_name']]
 
 non_mane_transcripts = pd.read_csv(non_mane_transcripts)
 print(str(len(mane.index)))
-mane = mane[~mane['gene_ID'].isin(list(non_mane_transcripts['gene_ID'])]
+mane = mane[~mane['gene_ID'].isin(list(non_mane_transcripts['gene_ID']))]
 print(str(len(mane.index)))
 mane = pd.concat([mane, non_mane_transcripts])
 print(str(len(mane.index)))

@@ -68,8 +68,8 @@ cgc = cgc.drop(['start', 'containing_ensg','ensg_no', 'rest'], axis=1)
 
 #get the mane file into the correct format for nextflow
 mane = pd.read_csv(mane_path, sep='\t')
-mane[['transcript_ID', 'to_del2']] = mane['name'].str.split('.', expand=True)
-mane[['gene_ID', 'to_del2']] = mane['geneName'].str.split('.', expand=True)
+mane[['transcript_ID', 'to_del2']] = mane['name'].str.split('.', 1,expand=True)
+mane[['gene_ID', 'to_del2']] = mane['geneName'].str.split('.', 1, expand=True)
 mane = mane.rename(columns={'#chrom': 'chr', 'chromStart': 'start', 'chromEnd': 'end', 'geneName2': 'gene_name' })
 mane['chr'] = mane['chr'].str.replace('chr', '')
 mane_full = mane                       

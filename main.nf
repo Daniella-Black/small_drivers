@@ -35,6 +35,6 @@ process  CloudOS_MTR_input{
     
     script:
     """
-    coding_mutations_nf_testing.py -sample '$tumour_sample_platekey' -annotation_vcf_path '$somatic_small_variants_annotation_vcf' -mane '$mane' -hgnc '$hgnc' -cmc '$cmc' -non_mane_transcripts '$non_mane_transcripts' -cgc '$cgc'
+    coding_mutations_nf.py -sample '$tumour_sample_platekey' -annotation_vcf_path '$somatic_small_variants_annotation_vcf' -mane '$mane' -hgnc '$hgnc' -cmc '$cmc' -non_mane_transcripts '$non_mane_transcripts' -cgc '$cgc'
     """ 
 }

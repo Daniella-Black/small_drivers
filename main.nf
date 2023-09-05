@@ -20,17 +20,17 @@ process  CloudOS_MTR_input{
     set val(tumour_sample_platekey), file(somatic_small_variants_annotation_vcf), file(mane), file(hgnc), file(cmc), file(non_mane_transcripts), file(cgc) from ch_input
 
     output:
-    //file '*_coding_mutations.csv'
-    //file '*_coding_mutations_no_mane_transcript_maps.csv'
-    //file '*_coding_mutations_more_than_1_mane_transcript_maps.csv'
-    //file '*_sampcsqt_type.csv'
-    //file '*_cosmic_annotation_using_pos_no_indels.csv'
-    //file '*_one_cgc_mane_tran_associated_with_relevant_terms.csv'
-    //file '*_over_one_cgc_mane_tran_associated_with_relevant_term.csv'
-    //file '*_tert_promoter_mutations.csv'
-    file 'non_mane_transcripts.csv'
-    file 'mane_transcripts.csv'
-    file 'merge.csv'
+    file '*_coding_mutations.csv'
+    file '*_coding_mutations_no_mane_transcript_maps.csv'
+    file '*_coding_mutations_more_than_1_mane_transcript_maps.csv'
+    file '*_sampcsqt_type.csv'
+    file '*_cosmic_annotation_using_pos_no_indels.csv'
+    file '*_one_cgc_mane_tran_associated_with_relevant_terms.csv'
+    file '*_over_one_cgc_mane_tran_associated_with_relevant_term.csv'
+    file '*_tert_promoter_mutations.csv'
+    //file 'non_mane_transcripts.csv'
+    //file 'mane_transcripts.csv'
+    //file 'merge.csv'
     //file '*_pre_cosmic_for_splice_investigation.csv'
     
     script:

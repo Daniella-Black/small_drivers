@@ -30,6 +30,7 @@ process  CloudOS_MTR_input{
     //file '*_tert_promoter_mutations.csv'
     file 'non_mane_transcripts.csv'
     file 'mane_transcripts.csv'
+    file 'merge.csv'
     //file '*_pre_cosmic_for_splice_investigation.csv'
     
     script:

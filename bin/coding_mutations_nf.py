@@ -85,7 +85,7 @@ print(str(len(mane.index)))
 mane = pd.concat([mane, non_mane_transcripts])
 print(str(len(mane.index)))
 mane = mane.reset_index(drop = True)
-
+mane['chr'] = mane['chr'].str.replace('chr', '')
  
 
 #check how many mane canonical transcripts are listed in the info field. One is good. Sometimes there is more than one. Sometimes there are none. Sometimes there are more than one check_transcripts = list()

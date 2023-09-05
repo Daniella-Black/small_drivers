@@ -75,7 +75,7 @@ mane['chr'] = mane['chr'].str.replace('chr', '')
 mane_full = mane                       
 mane = mane[['chr', 'start', 'end', 'transcript_ID','gene_ID', 'gene_name']]
 
-non_mane_transcripts = pd.read_csv(non_mane_transcripts)
+non_mane_transcripts = pd.read_csv(non_mane_transcripts,sep='\t')
 print(str(len(mane.index)))
 mane = mane[~mane['gene_ID'].isin(list(non_mane_transcripts['gene_ID']))]
 print(str(len(mane.index)))

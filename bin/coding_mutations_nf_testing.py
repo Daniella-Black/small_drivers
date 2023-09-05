@@ -76,12 +76,14 @@ mane_full = mane
 mane = mane[['chr', 'start', 'end', 'transcript_ID','gene_ID', 'gene_name']]
 mane.to_csv('mane_transcripts.csv',index=False)
 
-non_mane_transcripts = pd.read_csv(non_mane_transcripts)
+non_mane_transcripts = pd.read_csv(non_mane_transcripts,sep='\t')
 non_mane_transcripts.to_csv('non_mane_transcripts.csv',index=False)
 print(str(len(mane.index)))
 print(str(len(non_mane_transcripts.index)))
-#mane = mane[~mane['gene_ID'].isin(list(non_mane_transcripts['gene_ID']))]
-#print(str(len(mane.index)))
-#mane = pd.concat([mane, non_mane_transcripts])
-#print(str(len(mane.index)))
+mane = mane[~mane['gene_ID'].isin(list(non_mane_transcripts['gene_ID']))]
+print(str(len(mane.index)))
+mane = pd.concat([mane, non_mane_transcripts])
+print(str(len(mane.index)))
 mane = mane.reset_index(drop = True)
+
+mane.to_csv('merge.csv',index=False)

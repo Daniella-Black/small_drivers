@@ -14,6 +14,7 @@ import pandas as pd
 import re
 import os
 import argparse
+from dataclasses import dataclass
 
 
 @dataclass

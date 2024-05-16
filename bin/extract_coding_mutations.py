@@ -17,20 +17,18 @@ import argparse
 from dataclasses import dataclass
 
 
+
 @dataclass
 class SequenceRange:
     """Class for the start and end of a range."""
     name: str
-    transcript: str
     start: int
     end: int
     chrom: str
-    total_cn: int
     def overlaps(self, other: "SequenceRange") -> bool:
         if self.chrom != other.chrom:
             return False
         return (other.start <= self.start <= other.end) or (other.start <= self.end <= other.end) or (self.start <= other.start <= self.end) or (self.start <= other.end <= self.end)
-
 
 ##read in arguments
 my_parser = argparse.ArgumentParser(description='get arguments')

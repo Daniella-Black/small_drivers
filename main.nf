@@ -17,7 +17,7 @@ process  extract_coding_mutations{
     publishDir "${params.outdir}/$sample", mode: 'copy'
     
     input:
-    set val(sample), file(mutations), file(mane), file(regions) from ch_input
+    set val(sample), file(mutations),file(regions) from ch_input
 
     output:
     file '*_coding_mutations.csv'

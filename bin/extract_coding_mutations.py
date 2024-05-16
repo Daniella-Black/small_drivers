@@ -37,7 +37,7 @@ regions = args.regions
 
 
 ###prepare the regions file: here adding 5 on either end of the exon to pick up any splice reigon variants of interest (i.e. up to +5G)
-regions = pd.read_csv('/mnt/session_data/Extract_mutations_in_exons/2024_05_16_mane_and_canonical_transcript_exons_hg37_without_extra_info.csv')
+regions = pd.read_csv(regions)
 regions['start'] = regions['start'] -5
 regions['end'] = regions['end'] +5
 
@@ -47,7 +47,7 @@ regions['chr']  = regions['chr'].str.replace('23','X')
 regions['chr']  = regions['chr'].str.replace('23','Y')
 
 ## prepare the mutations file
-mutations = pd.read_csv('/mnt/session_data/Extract_mutations_in_exons/breast560/filtered_snv_indels/PD10010a_filtered_snv_indel_from_rdata.csv')
+mutations = pd.read_csv(mutations)
 mutations['id'] = mutations['chr'].astype('str') + '_' +mutations['position'].astype('str') + '_'+ mutations['REF']+ '_'+ mutations['ALT']
 mutations['chr']  = mutations['chr'].str.replace('chr','')
 mutations['chr']  = mutations['chr'].str.replace('23','X')

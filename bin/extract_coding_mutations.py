@@ -8,34 +8,20 @@ my_parser = argparse.ArgumentParser(description='get arguments')
 my_parser.add_argument('-sample',
                        type=str,
                        help='sample')
-my_parser.add_argument('-annotation_vcf_path',
+my_parser.add_argument('-mutations',
                        type=str,
                        help='annotation_vcf_path')
-my_parser.add_argument('-mane',
+my_parser.add_argument('-regions',
                        type=str,
                        help='path to the mane transcript table')
-my_parser.add_argument('-cmc',
-                       type=str,
-                       help='path to the cmc table')
-my_parser.add_argument('-hgnc',
-                       type=str,
-                       help='path to the hgnc table')
-my_parser.add_argument('-non_mane_transcripts',
-                       type=str,
-                       help='path to table containing non-mane transcript info')
-my_parser.add_argument('-cgc',
-                       type=str,
-                       help='path to cgc table')
+
 args = my_parser.parse_args()
 
 ###pull out coding mutations
 sample = args.sample
-annotation_vcf_path = args.annotation_vcf_path
-mane_path = args.mane
-cmc = args.cmc
-hgnc = args.hgnc
-non_mane_transcripts = args.non_mane_transcripts
-cgc = args.cgc
+mutations = args.mutations
+regions = args.regions
+
 
 def flatten(A):
     rt = []

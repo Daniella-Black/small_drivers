@@ -11,7 +11,7 @@ Channel
 //run the script to make MTR input on above file paths
 process  extract_coding_mutations{
     //maxForks 900
-    errorStrategy 'finish'
+    //errorStrategy 'finish'
     //maxRetries 0
     tag"$sample"
     publishDir "${params.outdir}/$sample", mode: 'copy'

@@ -63,6 +63,7 @@ regions['chr']  = regions['chr'].str.replace('23','Y')
 
 ## prepare the mutations file
 mutations = pd.read_csv(mutations)
+mutations['chr'] = mutations['chr'].astype('str')
 mutations['id'] = mutations['chr'].astype('str') + '_' +mutations['position'].astype('str') + '_'+ mutations['REF']+ '_'+ mutations['ALT']
 mutations['chr']  = mutations['chr'].str.replace('chr','')
 mutations['chr']  = mutations['chr'].str.replace('23','X')

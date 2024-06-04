@@ -84,4 +84,4 @@ for row in range(len(mutations.index)):
 mutations= mutations[mutations['id'].isin(coding)]
 
 ##output table of coding mutations
-mutations[['chr','position','REF','ALT']].to_csv(sample + '_coding_mutations.csv', index=False)        
+mutations[['chr','position','REF','ALT','VAF','ASMD','CLPM','QUAL','REP']].to_csv(sample + '_coding_mutations.csv', index=False)        

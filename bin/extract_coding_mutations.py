@@ -80,8 +80,8 @@ for row in range(len(mutations.index)):
             if region.overlaps(mutation):
                 coding.append(mutation.name)
 
-##keep only the mutations overlapping with regions
-mutations= mutations[mutations['id'].isin(coding)]
+##keep only the mutations overlapping with regions NOT OVERLAP THIS IS FOR NONCODING EVENTs
+mutations= mutations[~mutations['id'].isin(coding)]
 
 ##output table of coding mutations
 mutations[['chr','position','REF','ALT','VAF']].to_csv(sample + '_coding_mutations.csv', index=False)        

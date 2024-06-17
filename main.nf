@@ -4,7 +4,7 @@ Channel
     .fromPath(params.inputlist)
     .ifEmpty {exit 1, "Cannot find input file : ${params.inputlist}"}
     .splitCsv(skip:1)
-    .map{tumour_sample_platekey, somatic_small_variants_annotation_vcf, mane, hgnc, cmc, non_mane_transcripts-> [tumour_sample_platekey, file(somatic_small_variants_annotation_vcf), file(mane), file(hgnc), file(cmc), file(non_mane_transcripts)]}
+    .map{tumour_sample_platekey, somatic_small_variants_annotation_vcf, mane, hgnc, cmc, non_mane_transcripts,cgc -> [tumour_sample_platekey, file(somatic_small_variants_annotation_vcf), file(mane), file(hgnc), file(cmc), file(non_mane_transcripts),file(cgc)]}
     .set{ ch_input }
 
 
@@ -15,13 +15,13 @@ process  CloudOS_MTR_input{
     publishDir "${params.outdir}/$tumour_sample_platekey", mode: 'copy'
     
     input:
-    set val(tumour_sample_platekey), file(somatic_small_variants_annotation_vcf), file(mane), file(hgnc), file(cmc), file(non_mane_transcripts) from ch_input
+    set val(tumour_sample_platekey), file(somatic_small_variants_annotation_vcf), file(mane), file(hgnc), file(cmc), file(non_mane_transcripts), file(cgc) from ch_input
 
     output:
     file '*_tert_promoter_mutations_from_unfiltered_mutation_file.csv'
-    file '*_unique_chr.csv'
-    file '*_unfiltered_variants.csv'
-    file '*_filtered_variants.csv'
+    //file '*_unique_chr.csv'
+    //file '*_unfiltered_variants.csv'
+    //file '*_filtered_variants.csv'
     
     script:
     """

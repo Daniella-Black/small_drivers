@@ -133,5 +133,5 @@ samp_filtered.to_csv(sample+ '_filtered_variants.csv', index=False)
 #to_keep = list(samp['INFO'].str.contains('|'.join(relevant_terms)))
 #samp['relevant_types']=to_keep
 #sampcsqt_type = samp.loc[samp['relevant_types']==True]
-samp_tert = samp[(samp['pos'].isin([1295228, 1295250,1295229,1295242,1295243])) & (samp['chr']=='chr5')]
+samp_tert = samp[(samp['pos'].isin([1295113,1295135,1295114,1295127,1295128])) & (samp['chr']=='chr5')]
 samp_tert.to_csv(sample + '_tert_promoter_mutations_from_unfiltered_mutation_file.csv', index=False)
